@@ -1,8 +1,5 @@
 # Image-Processing-Final
 
-Image Processing Final
-=======================
-
 Important Dates
 ----------------
 - 12/22(Thr) 		21:00 - 24:00 Examine preliminary results
