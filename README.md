@@ -2,10 +2,10 @@
 
 Important Dates
 ----------------
-- 12/22(Thr) 		21:00 - 24:00 Examine preliminary results
-- 12/24-25(Sat-Sun) Finish the rest of the project + ppt
-- 12/26(Mon)		Presentation
--  1/19(Thr)		Final report(4-6 pages)
+- **12/22(Thr)** 		21:00 - 24:00 Examine preliminary results
+- **12/24-25(Sat-Sun)** Finish the rest of the project + ppt
+- **12/26(Mon)**		Presentation
+- **1/19(Thr)**			Final report(4-6 pages)
 
 Division of work
 ------------------
