@@ -7,7 +7,7 @@ function [FLm, Hm] = findTurningPt(input)
     smoothed = imgaussfilt(input, var,'FilterSize', [filterSize filterSize]);
     
     % generate histogram
-    
+    [counts, ] = imhist(smoothed);
     
 end
 
