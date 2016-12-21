@@ -1,6 +1,9 @@
 function [FLm, Hm] = findTurningPt(input, Bf)
     % The input should be the Y(luminance) of the image(grayscale)
-
+    
+    % size of input
+    [M,N] = size(input);
+    
     % Gaussian filter
     var = 4;
     filterSize = 6*var+1;
@@ -8,6 +11,11 @@ function [FLm, Hm] = findTurningPt(input, Bf)
     
     % generate histogram
     [p, ] = imhist(smoothed);
+    p = transpose(p);
+    p = p/(M*N);
+    figure(1)
+    plot(p);
+    title('histogram')
     
     % generate series a,b
     TH = 0.0013;
@@ -19,10 +27,16 @@ function [FLm, Hm] = findTurningPt(input, Bf)
             a(i) = i;
         end
     end
+    figure(2)
+    plot(a)
+    title('a');
     
     for i=2:256
         b(i-1) = abs(a(i) - a(i-1));
     end
+    figure(3)
+    plot(b)
+    title('b');
     
     % obtain set T
     count=1;
@@ -33,13 +47,15 @@ function [FLm, Hm] = findTurningPt(input, Bf)
                 T(count) = j;
                 count = count+1;
             end
-            if(b(i) == a(i+1))
+            if(b(i) == a(i+1) && b(i)~=0)
                 T(count) = i+1;
                 count = count+1;
             end
         end
     end
-    whos T;
+    figure(4)
+    plot(T)
+    title('T');
     
     % FLm, Lm, Hm
     tmp = (1:1:256);
