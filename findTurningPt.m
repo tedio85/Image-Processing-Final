@@ -60,7 +60,15 @@ function [FLm, Hm] = findTurningPt(input, Bf)
     % FLm, Lm, Hm
     tmp = (1:1:256);
     Lm = sum(p(T(1):T(2)).*tmp(T(1):T(2))) / sum(p(T(1):T(2)));
+    if(isnan(Lm))
+        Lm = sum(p(T(1):T(2)).*tmp(T(1):T(2)));
+    end
+    
     Hm = sum(p(T(3):T(4)).*tmp(T(3):T(4))) / sum(p(T(3):T(4)));
+    if(isnan(Hm))
+        Hm = sum(p(T(3):T(4)).*tmp(T(3):T(4)));
+    end
+    
     FLm = Lm + Lm * Bf;
     
 end
