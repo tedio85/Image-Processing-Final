@@ -7,7 +7,7 @@ Bhist  = computeBhist(imgY);
 Bf = computeBf(Bimage, Bhist);
 
 [FLm, Hm] = findTurningPt(imgY, Bf);
-compensated = compensationCurve(FLm, Hm, imgY);
+compensated = compensationCurve(round(FLm), round(Hm), imgY);
 
 imgYIQ(:,:,1) = compensated;
 result = ntsc2rgb(imgYIQ);
