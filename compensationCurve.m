@@ -18,9 +18,5 @@ function [ output ] = compensationCurve( a, b, input )
             end
         end
     end
-    figure(1)
-    title('curve')
-    plot(curve)
-    curve
 end
 

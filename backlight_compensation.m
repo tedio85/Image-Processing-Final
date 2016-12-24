@@ -2,12 +2,15 @@ img = imread('testImg.tif');
 imgYIQ = rgb2ntsc(img);
 imgY = imgYIQ(:,:,1);
 
-Bimage = computeBimage(imgY);
-Bhist  = computeBhist(imgY);
-Bf = computeBf(Bimage, Bhist);
+%Bimage = computeBimage(imgY);
+%Bhist  = computeBhist(imgY);
+%Bf = computeBf(Bimage, Bhist);
 
-[FLm, Hm] = findTurningPt(imgY, Bf);
+[FLm, Hm] = findTurningPt(imgY, 0.681);
 compensated = compensationCurve(round(FLm), round(Hm), imgY);
 
-imgYIQ(:,:,1) = im2single(compensated);
+imgYIQ(:,:,1) = compensated;
+imgYIQ(:,:,1) = double(imgYIQ(:,:,1)) / 255;
 result = ntsc2rgb(imgYIQ);
+figure(1)
+imshow(result);
