@@ -1,6 +1,5 @@
 function [ Bhist ] = computeBhist( input )
-    YIQ = rgb2ntsc(input);
-    Y = YIQ(:,:,1);
+    Y = input;
     [M,N] = size(Y);
     [p, ] = imhist(Y);
     p = transpose(p);

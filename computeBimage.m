@@ -1,6 +1,5 @@
 function [Bimage]=computeBimage(input) 
-    YIQ = rgb2ntsc(input);
-    Y = YIQ(:,:,1);
+    Y = input;
     Y = im2double(Y);
     Y = im2uint8(Y);
     [m,n,p]=size(Y); 
