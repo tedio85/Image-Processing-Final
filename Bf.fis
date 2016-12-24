@@ -1,0 +1,47 @@
+[System]
+Name='Bf'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=9
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='Bimage'
+Range=[0 1]
+NumMFs=3
+MF1='small':'trapmf',[0 0 0.2 0.5]
+MF2='medium':'trimf',[0.2 0.5 0.9]
+MF3='large':'trapmf',[0.2 0.9 1 1]
+
+[Input2]
+Name='Bhist'
+Range=[0 1]
+NumMFs=3
+MF1='small':'trapmf',[0 0 0.2 0.5]
+MF2='medium':'trimf',[0.2 0.5 0.9]
+MF3='large':'trapmf',[0.5 0.9 1 1]
+
+[Output1]
+Name='Bf'
+Range=[0 1]
+NumMFs=3
+MF1='small':'trapmf',[0 0 0.2 0.5]
+MF2='medium':'trimf',[0.2 0.5 0.9]
+MF3='large':'trapmf',[0.5 0.9 1 1]
+
+[Rules]
+1 1, 1 (1) : 1
+1 2, 2 (1) : 1
+1 3, 3 (1) : 1
+2 1, 2 (1) : 1
+2 2, 3 (1) : 1
+2 3, 3 (1) : 1
+3 1, 3 (1) : 1
+3 2, 3 (1) : 1
+3 3, 3 (1) : 1
