@@ -21,5 +21,6 @@ function [ output ] = compensationCurve( a, b, input )
     figure(1)
     title('curve')
     plot(curve)
+    curve
 end
 
