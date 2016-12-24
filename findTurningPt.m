@@ -10,128 +10,123 @@ function [FLm, Hm] = findTurningPt(input, Bf)
     smoothed = imgaussfilt(input, var,'FilterSize', [filterSize filterSize]);
     
     % generate histogram
-    [pOri, ] = imhist(smoothed);
-    pOri = transpose(pOri);
-    pOri = pOri/(M*N);
-    figure(1)
-    plot(pOri);
-    title('histogram')
-    
-    % remove the parts that are too high in histogram
-    TH = 0.0013;
-    p = pOri;
-    for i=1:length(p)
-        if(p(i) > TH)
-            p(i) = TH;
-        end
-    end
-    
-    
-    
+    [p, ] = imhist(smoothed);
+    p = transpose(p);
+    p = p/(M*N);
+%     figure(1)
+%     plot(p);
+%     title('histogram')  
+        
     % find start/end pts of groups by flooding
-    target = 99;    % target percentage of intensities under the threshold 
-    range = 0.5;      % maximum percentage deviation of current and target
-    
-    % binary search 
-    l = 0.000001;
-    r = 0.5;
-    while(1)
-        m = (l+r)/2;
-        curPercent = findPercent(m);
+    thresh = 0.0001;
+    groupSize_MIN = 20;
+    dist = 20;  % is close enough to merge with prev/next group
+    interSpacing_MIN = 20;
+    ok = 0;
+    while(ok==0)
         
-        if(abs(curPercent-target) <= range)
-            break;
-        else
-            if(curPercent > target)
-                r = m;
-            else
-                l = m;
-            end
-        end
-        %fprintf('curPercent = %f, l = %f, m = %f,r = %f\n', curPercent, l, m, r);
-    end
-    fprintf('curPercent = %f, l = %f, m = %f,r = %f\n', curPercent, l, m, r);
-    
-    % get start/end points
-    thresh = l;
-    pairs = zeros(1, 10);
-    j = 1;
-    connected = 0;    % is walking inside a group
-    count_MIN = 15;   % minimum size of a group
-    count = 0;
-    misCount_MAX = 2; % number of tolerated discontinuities
-    misCount = 0;   
-    for i=1:length(p)
-        
-        if(i == length(p) && connected == 1) %reaches end of histogram
-            if(count >= count_MIN)
-                pairs(j) = start;
-                pairs(j+1) = i;
-                j = j+2;
-                connected = 0;
-                count = 0;
-            end
+        [s,e] = getPairs(thresh);
+        while(length(s) > 6)
+            thresh = thresh + 0.0001;
+            [s,e] = getPairs(thresh);
         end
         
-        if(p(i) > thresh)
-            if(connected == 0)
-                start = i;
-                connected = 1;
-            else
-                misCount = 0;
-            end
-            count = count + 1;
-        else
-            if(connected == 1)
-                if(misCount < misCount_MAX)
-                    misCount = misCount+1;
-                else
-                    if(count >= count_MIN)
-                        pairs(j) = start;
-                        pairs(j+1) = i;
-                        j = j+2;
-                        connected = 0;
-                        count = 0;
-                    end
+        % group size limiting
+        for i=1:length(s)
+            if(e(i)-s(i) < groupSize_MIN)               
+                if(s(i)-e(i-1) < dist && i>=1)  %previous group
+                    s(i) = s(i-1);
+                    s(i-1) = 0;
+                    e(i-1) = 0;                
+                elseif(s(i+1)-e(i) < dist)      %next group
+                    s(i+1)=s(i);
+                    s(i) = 0;
+                    e(i) = 0;
+                else                            %delete this group
+                    s(i) = 0;
+                    e(i) = 0;
                 end
             end
         end
-    end
-    figure(2)
-    plot(p);
-    title('histogram & threshold')
-    ref = refline(0, thresh)
-    ref.Color = 'r';
-    thresh
-    pairs
-    p
-    % FLm, Lm, Hm
-%     tmp = (1:1:256);
-%     Lm = sum(p(T(1):T(2)).*tmp(T(1):T(2))) / sum(p(T(1):T(2)));
-%     if(isnan(Lm))
-%         Lm = sum(p(T(1):T(2)).*tmp(T(1):T(2)));
-%     end
-%     
-%     Hm = sum(p(T(3):T(4)).*tmp(T(3):T(4))) / sum(p(T(3):T(4)));
-%     if(isnan(Hm))
-%         Hm = sum(p(T(3):T(4)).*tmp(T(3):T(4)));
-%     end
-%     
-%     FLm = Lm + Lm * Bf;
-    
-    % find percentage under the designated threshold
-    function per = findPercent(thresh)
-        per = 0;
-        total = sum(p);
-        for z=1:length(p)
-            if(p(z)<= thresh)
-                per = per + p(z)/total;
-            else
-                per = per + thresh/total;
+        s = s(s~=0);
+        e = e(e~=0);
+        
+        % inter group spacing
+        for j=2:length(s)
+            if(s(j) - e(j-1) < interSpacing_MIN)
+                s(j) = s(j-1);
+                e(j-1) = 0;
+                s(j-1) = 0;
             end
         end
-        per = per * 100;
+        s = s(s~=0);
+        e = e(e~=0);
+        
+        
+        % 2 <= # of groups <= 3
+        if(length(s)>=2 && length(s)<=3)
+            ok = 1;
+        else
+            thresh = thresh + 0.0001;
+        end
+    end
+%     s
+%     e
+    
+%     figure(2)
+%     plot(p);
+%     title('histogram & threshold')
+%     ref = refline(0, thresh);
+%     ref.Color = 'r';
+%     thresh
+    
+    % FLm, Lm, Hm
+    tmp = (1:1:256);
+    Lm = sum(p(s(1):e(1)).*tmp(s(1):e(1))) / sum(p(s(1):e(1)));
+    if(isnan(Lm))
+        Lm = sum(p(s(1):e(1)).*tmp(s(1):e(2)));
     end
     
+    Hm = sum(p(s(2):e(2)).*tmp(s(2):e(2))) / sum(p(s(2):e(2)));
+    if(isnan(Hm))
+        Hm = sum(p(s(2):e(2)).*tmp(s(2):e(2)));
+    end
+    
+    FLm = Lm + Lm * Bf;
+    
+    
+    % find pairs of start/end points
+    % count_MIN - minimum size of a group
+    % misCount_MAX - number of tolerated discontinuities
+    function [s, e] = getPairs(thresh)
+        s = zeros(1,256);
+        e = zeros(1,256);
+        connected = 0;
+        count = 1;
+        for i=1:length(p)
+            
+            if(i==length(p) && connected == 1)  % is at the end
+                e(count) = i;
+                count = count+1;
+            end
+            
+            if(p(i)>thresh)
+                if(connected == 0)
+                    s(count) = i;
+                    connected = 1;
+                end
+            else
+                if(connected == 1)
+                    e(count) = i;
+                    connected = 0;
+                    count = count+1;
+                end
+            end
+        end
+        s = s(s~=0);
+        e = e(e~=0);
+    end
+
+
 end
 
