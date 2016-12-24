@@ -9,5 +9,5 @@ Bf = computeBf(Bimage, Bhist);
 [FLm, Hm] = findTurningPt(imgY, Bf);
 compensated = compensationCurve(round(FLm), round(Hm), imgY);
 
-imgYIQ(:,:,1) = compensated;
+imgYIQ(:,:,1) = im2single(compensated);
 result = ntsc2rgb(imgYIQ);

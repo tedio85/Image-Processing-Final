@@ -12,9 +12,9 @@ function [ output ] = compensationCurve( a, b, input )
     for i = 1 : M
         for j = 1: N
             if(input(i, j) == 0)
-                output(i, j) = 1 * curve(1);
+                output(i, j) = curve(1);
             else
-                output(i, j) = input(i,j) * curve( input(i, j) );
+                output(i, j) = curve( input(i, j) );
             end
         end
     end
