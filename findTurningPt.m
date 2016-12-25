@@ -7,7 +7,9 @@ function [FLm, Hm] = findTurningPt(input, Bf)
     % Gaussian filter
     var = 4;
     filterSize = 6*var+1;
-    smoothed = imgaussfilt(input, var,'FilterSize', [filterSize filterSize]);
+    %smoothed = imgaussfilt(input, var,'FilterSize', [filterSize filterSize]);
+    gauss = fspecial('gaussian',[filterSize, filterSize], sqrt(var));
+    smoothed = conv2(input, gauss);
     
     % generate histogram
     [p, ] = imhist(smoothed);

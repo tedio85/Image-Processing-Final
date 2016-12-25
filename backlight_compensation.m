@@ -1,4 +1,4 @@
-img = imread('testImg4.png');
+img = imread('testImg.tif');
 imgYIQ = rgb2ntsc(img);
 imgY = imgYIQ(:,:,1);
 
