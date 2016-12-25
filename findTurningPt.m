@@ -33,12 +33,12 @@ function [FLm, Hm] = findTurningPt(input, Bf)
         
         % group size limiting
         for i=1:length(s)
-            if(e(i)-s(i) < groupSize_MIN)               
-                if(s(i)-e(i-1) < dist && i>=1)  %previous group
+            if(e(i)-s(i) < groupSize_MIN) 
+                if( i>1 && s(i)-e(i-1) < dist )  %previous group
                     s(i) = s(i-1);
                     s(i-1) = 0;
                     e(i-1) = 0;                
-                elseif(s(i+1)-e(i) < dist)      %next group
+                elseif( i<length(s) && s(i+1)-e(i) < dist )      %next group
                     s(i+1)=s(i);
                     s(i) = 0;
                     e(i) = 0;
