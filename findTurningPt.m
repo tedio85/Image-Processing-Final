@@ -25,6 +25,7 @@ function [FLm, Hm] = findTurningPt(input, Bf)
     dist = 20;  % is close enough to merge with prev/next group
     interSpacing_MIN = 20;
     ok = 0;
+    marked2remove = -100;
     while(ok==0)
         
         [s,e] = getPairs(thresh);
@@ -36,33 +37,33 @@ function [FLm, Hm] = findTurningPt(input, Bf)
         % group size limiting
         for i=1:length(s)
             if(e(i)-s(i) < groupSize_MIN) 
-                if( i>1 && s(i)-e(i-1) < dist )  %previous group
+                if( i>1 && e(i-1)~=0 && s(i)-e(i-1) < dist )  %previous group
                     s(i) = s(i-1);
-                    s(i-1) = 0;
-                    e(i-1) = 0;                
+                    s(i-1) = marked2remove;
+                    e(i-1) = marked2remove;                
                 elseif( i<length(s) && s(i+1)-e(i) < dist )      %next group
                     s(i+1)=s(i);
-                    s(i) = 0;
-                    e(i) = 0;
+                    s(i) = marked2remove;
+                    e(i) = marked2remove;
                 else                            %delete this group
-                    s(i) = 0;
-                    e(i) = 0;
+                    s(i) = marked2remove;
+                    e(i) = marked2remove;
                 end
             end
         end
-        s = s(s~=0);
-        e = e(e~=0);
+        s = s(s~=marked2remove);
+        e = e(e~=marked2remove);
         
         % inter group spacing
         for j=2:length(s)
             if(s(j) - e(j-1) < interSpacing_MIN)
                 s(j) = s(j-1);
-                e(j-1) = 0;
-                s(j-1) = 0;
+                e(j-1) = marked2remove;
+                s(j-1) = marked2remove;
             end
         end
-        s = s(s~=0);
-        e = e(e~=0);
+        s = s(s~=marked2remove);
+        e = e(e~=marked2remove);
         
         
         % 2 <= # of groups <= 3
@@ -86,7 +87,7 @@ function [FLm, Hm] = findTurningPt(input, Bf)
     tmp = (1:1:256);
     Lm = sum(p(s(1):e(1)).*tmp(s(1):e(1))) / sum(p(s(1):e(1)));
     if(isnan(Lm))
-        Lm = sum(p(s(1):e(1)).*tmp(s(1):e(2)));
+        Lm = sum(p(s(1):e(1)).*tmp(s(1):e(1)));
     end
     
     Hm = sum(p(s(2):e(2)).*tmp(s(2):e(2))) / sum(p(s(2):e(2)));
