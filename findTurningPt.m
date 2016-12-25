@@ -108,11 +108,6 @@ function [FLm, Hm] = findTurningPt(input, Bf)
         count = 1;
         for i=1:length(p)
             
-            if(i==length(p) && connected == 1)  % is at the end
-                e(count) = i;
-                count = count+1;
-            end
-            
             if(p(i)>thresh)
                 if(connected == 0)
                     s(count) = i;
@@ -124,6 +119,11 @@ function [FLm, Hm] = findTurningPt(input, Bf)
                     connected = 0;
                     count = count+1;
                 end
+            end
+            
+            if(i==length(p) && connected == 1)  % is at the end
+                e(count) = i;
+                count = count+1;
             end
         end
         s = s(s~=0);
