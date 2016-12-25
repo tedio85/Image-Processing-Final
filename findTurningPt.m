@@ -73,15 +73,15 @@ function [FLm, Hm] = findTurningPt(input, Bf)
             thresh = thresh + 0.0001;
         end
     end
-%     s
-%     e
+    s
+    e
     
-%     figure(2)
-%     plot(p);
-%     title('histogram & threshold')
-%     ref = refline(0, thresh);
-%     ref.Color = 'r';
-%     thresh
+    figure(2)
+    plot(p);
+    title('histogram & threshold')
+    ref = refline(0, thresh);
+    ref.Color = 'r';
+    thresh
     
     % FLm, Lm, Hm
     tmp = (1:1:256);
