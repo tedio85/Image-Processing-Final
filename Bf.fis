@@ -17,7 +17,7 @@ Range=[0 1]
 NumMFs=3
 MF1='small':'trapmf',[0 0 0.2 0.5]
 MF2='medium':'trimf',[0.2 0.5 0.9]
-MF3='large':'trapmf',[0.2 0.9 1 1]
+MF3='large':'trapmf',[0.5 0.9 1 1]
 
 [Input2]
 Name='Bhist'

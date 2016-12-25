@@ -6,7 +6,7 @@ function [Bimage]=computeBimage(input)
     m1=fix(m/4); 
     n1=fix(n/4);
     m2=fix(3*m/4);
-    n2=fix(3*m/4);
+    n2=fix(3*n/4);
 
     A1=Y(1:m1,1:n,:); 
     A2=Y(m1+1:m2,1:n1,:); 
