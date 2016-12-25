@@ -73,9 +73,9 @@ function [FLm, Hm] = findTurningPt(input, Bf)
             thresh = thresh + 0.0001;
         end
     end
-%     s
-%     e
-%     
+    s
+    e
+    
     figure(2)
     plot(p);
     title('histogram & threshold')
@@ -96,8 +96,9 @@ function [FLm, Hm] = findTurningPt(input, Bf)
     end
     
     FLm = Lm + Lm * Bf;
-    
-    
+    Lm
+    FLm
+    Hm
     % find pairs of start/end points
     % count_MIN - minimum size of a group
     % misCount_MAX - number of tolerated discontinuities
