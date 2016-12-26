@@ -13,10 +13,16 @@ function [ output ] = compensationCurve( a, b, input )
         for j = 1: N
             if(input(i, j) == 0)
                 output(i, j) = curve(1);
+%             elseif(input(i,j)<200)
             else
                 output(i, j) = curve( input(i, j) );
+%             else
+%                 output(i,j) = input(i,j);
             end
         end
     end
+    figure(4)
+    plot(curve)
+    title('compensation curve')
 end
 
