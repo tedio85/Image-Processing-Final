@@ -1,10 +1,9 @@
 function MR3 = findCharacter(input)
 %   find the average gray level of the main character
-
-% k = edge(input, 'Canny',[0.05 0.80]);
-% figure(1);
-% title('Canny');
-% imshow(k);
+k = edge(input, 'Canny',[0.05 0.50]);
+figure(1);
+title('Canny');
+imshow(k);
 
 
 % [M,N] = size(input);
