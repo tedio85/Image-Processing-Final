@@ -1,4 +1,4 @@
-img = imread('./testImg/testImg5.jpg');
+img = imread('./testImg/testImg.tif');
 
 imgYIQ = rgb2ntsc(img);
 imgYIQ2 = imgYIQ;
@@ -24,16 +24,16 @@ compensated2 = compensationCurve(round(FLm2), round(Hm2), imgY);
 imgYIQ(:,:,1) = compensated;
 imgYIQ(:,:,1) = double(imgYIQ(:,:,1)) / 255;
 result = ntsc2rgb(imgYIQ);
-figure(1);
-title('Original Image');
-imshow(img);
-figure(2);
-title('Method proposed by the research paper');
-imshow(result);
+figure(1)
+imshow(img), title('Original Image');
+
+figure(2)
+imshow(result), title('Method proposed by the research paper');
+
 
 imgYIQ2(:,:,1) = compensated2;
 imgYIQ2(:,:,1) = double(imgYIQ2(:,:,1)) / 255;
 result2 = ntsc2rgb(imgYIQ2);
-figure(3);
-title('Method by our team');
-imshow(result2);
+figure(3)
+imshow(result2), title('Method by our team');
+
