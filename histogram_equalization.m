@@ -1,4 +1,4 @@
-img = imread('./testImg/testImg.tif');
+img = imread('./testImg/testImg4.jpg');
 imgYIQ = rgb2ntsc(img);
 imgYIQ(:,:,1) = histeq(imgYIQ(:,:,1));
 result = ntsc2rgb(imgYIQ);
