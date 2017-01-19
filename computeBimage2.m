@@ -33,7 +33,7 @@ function [ Bimage ] = computeBimage2( I )
     if (bimage < 20)
         Bimage = 0;
     elseif(bimage > 20 && bimage < 150 )
-        Bimage = (bimage-20) /120;
+        Bimage = (bimage-20) /130;
     else
         Bimage = 1;
 end
